@@ -1,0 +1,133 @@
+نام و قیمت محصوالتی که قیمت آنها بیشتر از 500 دالر است را نمایش دهید
+
+SELECT 
+NAME , PRICE FROM dbo.Products                                                
+WHERE Price > 500
+-----------------------------------------------------------------------------------
+مجموع مبلغ سفارشات ثبت شده در هر سال را نمایش دهید 
+
+SELECT 
+    YEAR(orderdate) AS order_year,
+    SUM(TotalAmount) AS totalamount
+FROM 
+    orders
+GROUP BY 
+    YEAR(orderdate)                                                            
+ORDER BY 
+    order_year;
+-----------------------------------------------------------------------------------
+ مجموع فروش )مجموع مبلغ سفارشات( برای هر دستهبندی محصول را محاسبه کنید
+
+SELECT
+SUM(TotalAmount) AS Total_Amount,
+ProductId AS Product_Id
+FROM 
+Orders
+GROUP BY                                                                      
+ProductId
+ORDER BY
+Product_Id
+-----------------------------------------------------------------------------------
+نام محصولات و قیمت آنها را به ترتیب قیمت از بالا به پایین نمایش دهید
+
+SELECT 
+ dbo.Products.Name,dbo.Products.Price
+FROM                                                                           
+dbo.Products
+ORDER BY dbo.Products.Price DESC
+-----------------------------------------------------------------------------------
+تعداد سفارشاتی که هر مشتری ثبت کرده است را محاسبه کنید
+
+SELECT 
+dbo.Orders.CustomerId,dbo.Orders.TotalAmount
+FROM Orders                                                                    
+ORDER BY dbo.Orders.CustomerId
+----------------------------------------------------------------------------------
+ متوسط قیمت محصوالت در هر دستهبند ی را محاسبه کنید
+
+SELECT dbo.Products.CategoryId, AVG(price) AS average_price
+FROM products                                                                
+GROUP BY CategoryId
+-----------------------------------------------------------------------------------
+نام محصوالت و نام دستهبندی آنها را به ترتیب الفبایی نمای ش دهید
+
+SELECT p.Name, c.Name
+FROM products p
+JOIN categories c ON p.CategoryId = c.Id                                        
+ORDER BY p.Name ASC, c.Name ASC;
+------------------------------------------------------------------------------------
+مجموع مبلغ سفارشات ثبت شده در هر دستهبندی در سال 2023 را نمایش دهید.
+
+SELECT c.Name, SUM(o.TotalAmount) AS total_amount
+FROM orders o
+JOIN Categories c ON o.ProductId = c.Id
+WHERE YEAR(o.OrderDate) = 2023
+GROUP BY c.Name
+
+-----------------------------------------------------------------------------------
+تعداد سفارشاتی که در هر ماه از سال ثبت شده است را محاسبه کنید
+
+SELECT 
+    MONTH(OrderDate) AS month,
+    COUNT(*) AS total_orders
+FROM 
+    orders  
+GROUP BY                                                                          
+    MONTH(OrderDate)
+ORDER BY 
+    MONTH
+--------------------------------------------------------------------------------------
+مجموع فروش )مجموع مبلغ سفارشات( برای هر مشتری را نمایش دهید
+
+SELECT 
+SUM(TotalAmount) AS Total_Amount,
+Orders.CustomerId
+FROM                                                                              
+Orders
+GROUP BY
+Orders.CustomerId
+-------------------------------------------------------------------------------------
+نام دستهبندی و تعداد سفارشات ثبت شده در هر دستهبندی را نمایش دهید
+
+SELECT Categories.Name, COUNT(Products.CategoryId) AS order_count
+FROM Products
+JOIN categories ON Products.CategoryId = categories.id                            
+GROUP BY Categories.Name
+-------------------------------------------------------------------------------------
+نام و تعداد سفارشات هر مشتر ی را به ترتیب تعداد سفارشات از زیاد به کم نمایش دهید
+
+SELECT c.Name, COUNT(o.Id) AS order_count
+FROM 
+customers c
+JOIN orders o ON c.Id = o.CustomerId                                             
+GROUP BY c.Name
+ORDER BY order_count DESC
+-------------------------------------------------------------------------------------
+تعداد سفارشات ثبت شده در هر سال را محاسبه کنید
+
+SELECT
+YEAR(OrderDate) AS Order_Data,
+COUNT(Orders.Id) AS Order_Count
+FROM 
+Orders                                                                            
+GROUP BY 
+    YEAR(OrderDate)
+ORDER BY 
+    Order_Data
+------------------------------------------------------------------------------------
+نام محصوالت و تعداد خریداران هر محصول را به ترتیب تعداد خریداران از زیاد به کم نمایش دهید
+
+SELECT 
+p.Name,
+COUNT(o.CustomerId) AS buyer_count
+FROM 
+products p
+JOIN orders o ON p.Id = o.ProductId                                    
+GROUP BY 
+p.Name
+ORDER BY 
+buyer_count DESC
+------------------------------------------------------------------------------------
+
+
+
